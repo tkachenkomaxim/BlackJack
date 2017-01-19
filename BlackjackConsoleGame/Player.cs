@@ -8,21 +8,25 @@ namespace BlackjackConsoleGame
 {
     public class Player
     {
-        public List<Card> Cards { get; set;}
+        public List<Card> Cards { get; set; }
         public string Name { get; set; }
-        public int Points { get; set; }
+        public int Points
+        {
+            get
+            {
+                int points = 0;
+                foreach (Card item in Cards)
+                {
+                    points += item.Point;
+                }
+                return points;
+            }
+        }
 
         public Player(string name)
         {
             Name = name;
-            Points = 0;
             Cards = new List<Card>();
-        }
-
-        public void TakeCard(Card card)
-        {
-            Points += card.Point;
-            Cards.Add(card);
         }
     }
 }
