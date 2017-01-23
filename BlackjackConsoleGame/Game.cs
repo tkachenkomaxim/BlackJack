@@ -5,50 +5,64 @@ namespace BlackjackConsoleGame
 {
     public class Game
     {
-        readonly Player computer = new Player("Dealer");
-        private Player player;
-        private Deck deck;
-        private Dealer dealer;
-        private List<Card> cards;
-        public Game()
-        {
-            player = new Player(Presenter.GetPlayerName());
+        private readonly Player _computer = new Player() { Name = "Dealer" };
+        private Player _player;
+        private Deck _deck;
+        private Dealer _dealer;
+        private List<Card> _cards;
 
-            deck = new Deck();
-            dealer = new Dealer(deck);
+        public Game(string playerName)
+        {
+            _player = new Player();
+            if(playerName == null)
+            {
+                _player.Name = Presenter.GetPlayerName();
+            }
+            if(playerName != null)
+            {
+                _player.Name = playerName;
+            }
+            _deck = new Deck();
+            _dealer = new Dealer(_deck);
             CreateCards();
-            dealer.Shuffle(cards);
+            _dealer.Shuffle(_cards);
             StartGame();
+        }
+
+        public Game() : this(null)
+        {
+            
         }
 
         void CreateCards()
         {
-            cards = new List<Card>(Deck.quantityCards);
+            _cards = new List<Card>(Deck.quantityCards);
+            int firstRankNumber = (int)Rank.Two;
+            int lastRankNumber = (int) Rank.Ace;
 
-            for (int i = 0; i < Deck.quantityRanks; i++)
+            for (int i = firstRankNumber; i <= lastRankNumber; i++)
             {
                 for (int j = 0; j < Deck.quantitySuits; j++)
                 {
-                    int points;
-
-                    switch ((Ranks)i)
+                    int points = 0;
+                    if(i <= (int) Rank.Ten)
                     {
-                        case Ranks.Two: points = 2; break;
-                        case Ranks.Three: points = 3; break;
-                        case Ranks.Four: points = 4; break;
-                        case Ranks.Five: points = 5; break;
-                        case Ranks.Six: points = 6; break;
-                        case Ranks.Seven: points = 7; break;
-                        case Ranks.Eight: points = 8; break;
-                        case Ranks.Nine: points = 9; break;
-                        case Ranks.Ace: points = 11; break;
-                        default: points = 10; break;
+                        points = i;
                     }
-
-                    cards.Add(new Card
+                    if (i > (int)Rank.Ten)
                     {
-                        Rank = (Ranks)i,
-                        Suit = (Suits)j,
+                        switch ((Rank)i)
+                        {
+                            case Rank.Jack: points = 2; break;
+                            case Rank.Queen: points = 3; break;
+                            case Rank.King: points = 4; break;
+                            case Rank.Ace: points = 11; break;
+                        }
+                    }
+                        _cards.Add(new Card
+                    {
+                        Rank = (Rank)i,
+                        Suit = (Suit)j,
                         Point = points
                     });
                 }
@@ -57,47 +71,57 @@ namespace BlackjackConsoleGame
 
         void StartGame()
         {
-            player.Cards.Add(dealer.Deal());
-            computer.Cards.Add(dealer.Deal());
-            player.Cards.Add(dealer.Deal());
-            computer.Cards.Add(dealer.Deal());
+            _player.Cards.Add(_dealer.Deal());
+            _computer.Cards.Add(_dealer.Deal());
+            _player.Cards.Add(_dealer.Deal());
+            _computer.Cards.Add(_dealer.Deal());
 
-            Presenter.GetHandsCards(computer,player);
+            CountinueGame();
+        }
 
+        void CountinueGame()
+        {
+            Presenter.GetHandsCards(_computer, _player);
             TakeNext();
             Presenter.ShowWinner(GetWinner());
+            if (Presenter.PlayAgain())
+            {
+                new Game(_player.Name);
+            }
         }
 
         public void TakeNext()
         {
-            if (player.Points < 21 & computer.Points < 21 & computer.Points != 21)
+            if (_player.Points < 21 & _computer.Points < 21 & _computer.Points != 21)
             {       
                 if (Presenter.TakeCard())
                 {
-                    player.Cards.Add(dealer.Deal());
-                    Presenter.GetHandsCards(computer, player);
+                    _player.Cards.Add(_dealer.Deal());
+                    Presenter.GetHandsCards(_computer, _player);
                     TakeNext();
                 }
             }
-            if (player.Points <= 21 & computer.Points < 21 & player.Points > computer.Points & player.Points != 21)
+            if (_player.Points <= 21 & _computer.Points < 21 & _player.Points > _computer.Points & _player.Points != 21)
             {
-                    while (computer.Points < player.Points & computer.Points < 21|| computer.Points == 21)
+                    while (_computer.Points < _player.Points & _computer.Points < 21|| _computer.Points == 21)
                     {
-                    computer.Cards.Add(dealer.Deal());
+                    _computer.Cards.Add(_dealer.Deal());
                 }
-                Presenter.GetHandsCards(computer, player);
+                Presenter.GetHandsCards(_computer, _player);
             }
         }
 
-        public string GetWinner()
+        public Player GetWinner()
         {
-            if ( player.Points == 21 & computer.Points != 21 || player.Points <= 21 & player.Points > computer.Points & computer.Points < 21 || computer.Points>21 & player.Points <= 21)
+            if(_player.Points == _computer.Points)
             {
-                return "PLAYER WIN";
-            } else
-                {
-                return "DEALER WIN";
-                }            
+                return null;
+            }
+            if ( _player.Points == 21 & _computer.Points != 21 || _player.Points <= 21 & _player.Points > _computer.Points & _computer.Points < 21 || _computer.Points>21 & _player.Points <= 21)
+            {
+                return _player;
+            } 
+                return _computer;          
         }
     }
 }

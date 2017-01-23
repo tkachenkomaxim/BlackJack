@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlackjackConsoleGame
 {
@@ -23,9 +20,8 @@ namespace BlackjackConsoleGame
             }
         }
 
-        public Player(string name)
+        public Player()
         {
-            Name = name;
             Cards = new List<Card>();
         }
     }

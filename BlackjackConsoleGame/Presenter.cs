@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlackjackConsoleGame
 {
@@ -10,7 +7,6 @@ namespace BlackjackConsoleGame
     {
         public static string GetPlayerName()
         {
-
             Console.Write("Enter your name: ");
             string name = Console.ReadLine();
 
@@ -36,40 +32,44 @@ namespace BlackjackConsoleGame
                 Console.WriteLine(" Card {0}: {1} of {2}", i + 1, player.Cards[i].Rank, player.Cards[i].Suit);
             }
             Console.WriteLine(" Total: {0}", player.Points);
-
         }
 
         public static bool TakeCard()
         {
             string answer;
             Console.WriteLine("Take next card? y/n");
-            answer = Console.ReadLine();
+            answer = Console.ReadLine().ToUpper();
 
-            if (answer == "y" || answer == "Y")
-                return true;
-            else return false;
-            
-        }
-
-        public static void ShowWinner(string winner)
-        {
-            Console.WriteLine(winner);
-            PlayAgain();
-
-        }
-
-        public static void PlayAgain()
-        {
-            string answer;
-            Console.WriteLine("Want play again? y/n");
-            answer = Console.ReadLine();
-
-            if (answer == "y" || answer == "Y")
+            if (answer == "Y")
             {
-                new Game();
+                return true;
+            }
+            return false;
+        }
+
+        public static void ShowWinner(Player winner)
+        {
+            if (winner != null)
+            {
+                Console.WriteLine("{0} WIN!", winner.Name);
+            }
+            if (winner == null)
+            {
+                Console.WriteLine("DRAW!");
             }
         }
 
-
+        public static bool PlayAgain()
+        {
+            string answer;
+            Console.WriteLine("Want play again? y/n");
+            answer = Console.ReadLine().ToUpper();
+            
+            if (answer == "Y")
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
 
-
 namespace BlackjackConsoleGame
 {
-
     class Program
     { 
         static void Main(string[] args)
