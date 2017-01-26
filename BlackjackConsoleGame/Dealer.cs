@@ -13,19 +13,19 @@ namespace BlackjackConsoleGame
             _deck = deck;
         }
 
-        public void Shuffle(List<Card> cards)
+        public void Shuffle()
         {
-            for (int i = Deck.quantityCards; i != 0; i--)
+            for (int i = _deck.Cards.Count; i != 0; i--)
             {
                 int randNumber = _rand.Next(0, i);
-                _deck.shufflingCards.Push(cards[randNumber]);
-                cards.Remove(cards[randNumber]);
+                _deck.ShufflingCards.Push(_deck.Cards[randNumber]);
+                _deck.Cards.Remove(_deck.Cards[randNumber]);
             }
         }
 
         public Card Deal()
         {
-            return _deck.shufflingCards.Pop();
+            return _deck.ShufflingCards.Pop();
         }
     }
 }

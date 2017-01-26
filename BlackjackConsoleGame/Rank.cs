@@ -13,9 +13,10 @@ namespace BlackjackConsoleGame
         Eight,
         Nine,
         Ten,
+        Ace,
         Jack,
         Queen,
         King,
-        Ace
+       
     }
 }
