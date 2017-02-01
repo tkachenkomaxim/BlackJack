@@ -12,29 +12,37 @@ namespace BlackjackConsoleGame
         {
             ShufflingCards = new Stack<Card>();
             Cards = new List<Card>();
-            int firstRankNumber = (int)Rank.Two;
-            int lastRankNumber = (int)Rank.King;
-            int quantitySuits = Enum.GetValues(typeof(Suit)).Length;
+            CreateCards();
+            
+        }
+
+        private void CreateCards()
+        {
+            int firstRankNumber = 0;
+            int lastRankNumber = 12;
+            int firstSuitNumber = 0;
+            int lastSuitNumber = 3;
+            int aceRankNumber = (int)Rank.Ace;
 
             for (int i = firstRankNumber; i <= lastRankNumber; i++)
-            {
-                for (int j = 0; j < quantitySuits; j++)
+            { 
+                for (int j = firstSuitNumber; j <= lastSuitNumber; j++)
                 {
                     int points = 0;
-                    if (i <= (int)Rank.Ace)
+                    if (i <= aceRankNumber)
                     {
-                        points = i;
+                        points = i + 2;
                     }
-                    if (i > (int)Rank.Ace)
+                    if (i > aceRankNumber)
                     {
-                        points = i - 10;
+                        points = i - 8;
                     }
-                    Cards.Add(new Card
-                    {
-                        Rank = (Rank)i,
-                        Suit = (Suit)j,
-                        Point = points
-                    });
+                    Card card = new Card();
+                    card.Rank = (Rank)i;
+                    card.Suit = (Suit)j;
+                    card.Point = points;
+                    
+                    Cards.Add(card);
                 }
             }
         }

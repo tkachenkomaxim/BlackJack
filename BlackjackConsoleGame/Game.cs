@@ -9,6 +9,7 @@ namespace BlackjackConsoleGame
         private Player _player;
         private Deck _deck;
         private Dealer _dealer;
+        private readonly int victoryCondition = 21;
 
         public Game(string playerName)
         {
@@ -76,7 +77,7 @@ namespace BlackjackConsoleGame
 
         public bool EndGame()
         {
-            if (_player.Points >= 21 || _computer.Points >= 21)
+            if (_player.Points >= victoryCondition || _computer.Points >= victoryCondition)
             {
                 return true;
             }
@@ -90,7 +91,7 @@ namespace BlackjackConsoleGame
                 return null;
             }
             
-            if ( _player.Points == 21 || _player.Points < 21 & _player.Points > _computer.Points || _computer.Points > 21)
+            if ( _player.Points == victoryCondition || _player.Points < victoryCondition && _player.Points > _computer.Points || _computer.Points > victoryCondition)
             {
                 return _player;
             } 

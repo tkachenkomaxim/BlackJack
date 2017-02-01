@@ -4,7 +4,7 @@ namespace BlackjackConsoleGame
 {
     public enum Rank
     {
-        Two = 2,
+        Two,
         Three,
         Four,
         Five,
